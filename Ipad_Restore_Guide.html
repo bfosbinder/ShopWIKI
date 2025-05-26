@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>iPad Restore on Linux – Troubleshooting Journey</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background:#f8fafc; color:#1e293b; line-height:1.6;}
+    header { background:#0f172a; color:#f8fafc; padding:2rem 1rem; text-align:center;}
+    h1 { margin:0; font-size:2rem;}
+    nav { margin-top:1rem;}
+    nav a { color:#38bdf8; margin:0 .5rem; text-decoration:none; }
+    main { max-width: 800px; margin:2rem auto; padding:0 1rem;}
+    section { margin-bottom:2.5rem;}
+    h2 { color:#0e7490; }
+    code, pre { background:#e2e8f0; border-radius:6px; padding:.2rem .4rem; font-family:ui-monospace, monospace;}
+    pre { padding:1rem; overflow-x:auto;}
+    .warn { background:#fef3c7; border-left:4px solid #facc15; padding:1rem; }
+    .tip  { background:#dcfce7; border-left:4px solid #4ade80; padding:1rem; }
+    footer { background:#e2e8f0; text-align:center; padding:1rem; font-size:.875rem;}
+  </style>
+</head>
+<body>
+<header>
+  <h1>iPad Restore on Linux &mdash; What Went Wrong and How We Fixed It</h1>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#failures">Early Mis‑Steps</a>
+    <a href="#modes">DFU vs Recovery</a>
+    <a href="#solution">New Build Workflow</a>
+    <a href="#lessons">Takeaways</a>
+    <a href="#resources">Resources</a>
+  </nav>
+</header>
+<main>
+  <section id="overview">
+    <h2>Project Overview</h2>
+    <p>We wanted to wipe and reinstall iPadOS on an older iPad using <strong>only Linux</strong>. Sounds simple, but we ran into a string of <em>very</em> familiar pain‑points: flaky
+    cables, half‑broken packages, USB‑port weirdness, and confusion about DFU versus Recovery mode. This page documents the dead‑ends
+    and, more importantly, the repeatable fix using the <abbr title="libimobiledevice + libirecovery">latest open‑source stack</abbr>.</p>
+  </section>
+
+  <section id="failures">
+    <h2>Where We Went Wrong</h2>
+
+    <div class="warn">
+      <p><strong>Cable Chaos:</strong> our first micro‑USB → Lightning cord turned out to be a charge‑only knock‑off. It would power the iPad but <em>never</em> enumerated
+      as a USB device, so <code>lsusb</code> stayed silent and all restore tools failed.</p>
+    </div>
+
+    <ul>
+      <li><strong>USB 3.0 Quirks:</strong> DFU negotiates only <abbr title="USB 2.0 high‑speed">480 Mb s‑1</abbr>. Plugging into a blue USB 3.x port caused intermittent disconnects on our kernel; swapping to a black USB 2.0 port (or a USB‑C hub that falls back to 2.0) fixed link flakiness.</li>
+      <li><strong>Mis‑reading Modes:</strong> We kept booting into <em>Recovery</em> (Apple logo) instead of full DFU (black screen) so <code>irecovery</code> threw <code>CPID</code> but firmware upload stalled.</li>
+      <li><strong>Old Packages:</strong> Debian/Ubuntu repos still ship <code>libimobiledevice 1.2.x</code>. That build predates iPadOS&nbsp;17 USB handshake and fails with
+        <code>ERROR: Unable to connect to device in DFU mode</code>.</li>
+      <li><strong>Wrong Flags:</strong> We tried
+        <code>irecovery --dfu</code>, but the correct trigger flag is <code>-f</code>. Passing <code>--dfu</code> just printed <code>unrecognized option</code>.</li>
+      <li><strong>Kernel Lockdown:</strong> AV Linux shipped with USB lockdown enabled. Udev rules never granted <code>0666</code> permissions to the device.</li>
+    </ul>
+  </section>
+
+  <section id="modes">
+    <h2>DFU vs Recovery &ndash; Spot the Difference</h2>
+    <p><strong>Recovery Mode</strong> shows the iTunes/computer icon and can run a normal restore <em>only if</em> your iPadOS is healthy enough to boot a minimal
+      ramdisk. <strong>Device Firmware Update (DFU)</strong> is a lower‑level bootstrap that loads <code>iBoot</code> over USB even when main flash is corrupted.</p>
+
+    <pre><code># Check which mode you're in
+lsusb -d 05ac:12a8   # Recovery (iBoot)
+lsusb -d 05ac:1227   # DFU (pre-iBoot)</code></pre>
+
+    <p class="tip">If you see an Apple logo, you're <em>not</em> in DFU. DFU is a pitch‑black screen (the back‑light may flick once).</p>
+  </section>
+
+  <section id="solution">
+    <h2>The Working Solution &ndash; Rebuilding the Stack</h2>
+    <ol>
+      <li><strong>Use a certified data cable <em>and</em> a USB 2.0 port.</strong> We ended up with an <abbr title="USB‑IF certified">Anker PowerLine</abbr> plugged into a classic black USB 2.0 port. Avoid blue USB 3.x ports unless you confirm stable DFU enumeration.</li>
+      <li><strong>Install build deps.</strong><br>
+        <pre><code>sudo apt install --no-install-recommends \
+  build-essential libusbmuxd-dev libssl-dev libplist-dev \
+  libusb-1.0-0-dev git pkg-config</code></pre></li>
+      <li><strong>Clone and build the bleeding‑edge libs.</strong>
+        <pre><code>git clone https://github.com/libimobiledevice/libimobiledevice.git
+git clone https://github.com/pmateti/libirecovery.git
+
+cd libirecovery &amp;&amp; ./autogen.sh --enable-static &amp;&amp; make -j4 &amp;&amp; sudo make install
+cd ../libimobiledevice &amp;&amp; ./autogen.sh --without-cython &amp;&amp; make -j4 &amp;&amp; sudo make install
+sudo ldconfig</code></pre></li>
+      <li><strong>Create udev rule.</strong>
+        <pre><code>echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="05ac", MODE="0666"' | \
+  sudo tee /etc/udev/rules.d/39-ios.rules
+sudo udevadm control --reload-rules &amp;&amp; sudo udevadm trigger</code></pre></li>
+      <li><strong>Enter DFU &amp; restore.</strong>
+        <pre><code># Hold HOME + POWER for 4 s, release POWER, keep HOME for 10 s
+irecovery -q   # should print CPID / DFU
+
+idevicerestore -l            # list available IPSWs
+idevicerestore -e -w *.ipsw   # erase &amp; reinstall</code></pre></li>
+      <li><strong>Post‑restore pairing.</strong> Unplug/re‑plug, then:
+        <pre><code>idevicepair pair
+ideviceinfo | head</code></pre>
+        You should see info without errors.</li>
+    </ol>
+    <p class="tip">After installing from source, pin the repo versions so they don’t get overwritten by apt upgrades: <code>apt-mark hold libimobiledevice*</code>.</p>
+  </section>
+
+  <section id="lessons">
+    <h2>What We Learned</h2>
+    <ul>
+      <li>60 % of failures were hardware (cheap cables); always verify with <code>lsusb</code> first.</li>
+      <li>USB 2.0 ports are more reliable for DFU than many USB 3.x controllers.</li>
+      <li>Apple changes USB handshakes quietly—build the newest <code>lib*</code> stack.</li>
+      <li>Put iPad into DFU <em>before</em> running any restore command.</li>
+      <li>Write a quick udev rule instead of debugging <code>permission denied</code> at 2 a.m.</li>
+    </ul>
+  </section>
+
+  <section id="resources">
+    <h2>Helpful Resources</h2>
+    <ul>
+      <li><a href="https://libimobiledevice.org/" target="_blank" rel="noopener">libimobiledevice Project</a></li>
+      <li><a href="https://github.com/libimobiledevice/idevicerestore" target="_blank" rel="noopener">idevicerestore</a></li>
+      <li><a href="https://theiphonewiki.com/wiki/DFU_Mode" target="_blank" rel="noopener">iPhone Wiki &ndash; DFU Mode</a></li>
+    </ul>
+  </section>
+</main>
+<footer>Last updated: May&nbsp;26&nbsp;2025 • Page by Brian &amp; ChatGPT</footer>
+</body>
+</html>
