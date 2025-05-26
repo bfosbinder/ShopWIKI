@@ -1,1 +1,9 @@
-site_name: My Docs
+site_name: Shop WIKI
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Hardware Fixes:
+      - iPad Restore Guide: ipad-restore-guide.md   # ← single file
+      #     └─ or "ipad-restore/index.html" if you kept the HTML
