@@ -1,9 +1,8 @@
-site_name: Shop WIKI
+site_name: ShopWIKI
 theme:
   name: material
 
 nav:
   - Home: index.md
-  - Hardware Fixes:
-      - iPad Restore Guide: ipad-restore-guide.md   # ← single file
-      #     └─ or "ipad-restore/index.html" if you kept the HTML
+  - Repair Guides:
+      - iPad restore on Linux: ipad-restore-guide.md   # ⬅️ add this line
