@@ -2,7 +2,6 @@ site_name: ShopWIKI
 theme:
   name: material
 
-nav:
-  - Home: index.md
-  - Repair Guides:
-      - iPad restore on Linux: ipad-restore-guide.md   # ⬅️ add this line
+plugins:
+  - search
+  - awesome-pages
