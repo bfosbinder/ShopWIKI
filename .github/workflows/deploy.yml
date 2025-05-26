@@ -1,16 +1,22 @@
-name: Deploy MkDocs
+kname: Deploy MkDocs
 on:
   push:
     branches: [ main ]
+
 jobs:
   build:
     permissions:
-      contents: write          # allow this job to push gh-pages
+      contents: write           # allow this job to push gh-pages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: pip install mkdocs-material
+
+      # install MkDocs + the awesome‑pages plugin  <<<–– NEW
+      - run: pip install mkdocs-material mkdocs-awesome-pages-plugin
+
       - run: mkdocs gh-deploy --force --verbose
+
