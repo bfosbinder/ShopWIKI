@@ -17,11 +17,4 @@ Sounds simple, but we ran into a string of *very* familiar pain-points: flaky ca
 
 DFU (Device Firmware Update) is the only mode that lets you completely reflash the firmware, whereas Recovery Mode simply reinstalls the OS without touching the bootloader. If you’re seeing the little cable-to-computer icon on the iPad screen, that’s Recovery Mode—not DFU—so tools like `libimobiledevice` won’t work until you force it into DFU (hold Power+Home for exactly 10 s, then release Power only).
 
-## New Build Workflow
 
-1. Switched our MkDocs config to use the **root** docs directory instead of `docs/`.  
-2. Installed the **awesome-pages** plugin locally:
-   
-   ```bash
-   pip install mkdocs-material mkdocs-awesome-pages-plugin
-   ```
