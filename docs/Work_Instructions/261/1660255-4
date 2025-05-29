@@ -1,0 +1,86 @@
+# 🔧 Git Session Explained – Pulling Remote Updates
+
+```bash
+brian@mx:~/ShopWIKI
+$ git status
+```
+
+### 📋 Output:
+
+```
+On branch main
+Your branch is behind 'origin/main' by 4 commits, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+nothing to commit, working tree clean
+```
+
+**✅ Summary:**
+
+* You're on the `main` branch.
+* Your local repo is **4 commits behind** the remote.
+* There are no local changes.
+* Git suggests running `git pull` to sync.
+
+---
+
+```bash
+$ git pull
+Enter passphrase for key '/home/brian/.ssh/id_ed25519':
+Updating 48ea005..65e630a
+Fast-forward
+ docs/Guides/ipad-restore.md             | 9 +--------
+ docs/Work_Instructions/261/1656952-1.md | 6 ++++++
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+```
+
+**📅 What Happened:**
+
+* Git fetched and fast-forwarded your local branch to match the remote.
+* Two files were updated:
+
+  * `ipad-restore.md`: had 8 lines removed, 1 added.
+  * `1656952-1.md`: had 6 lines added.
+* No merge was necessary because your local branch had no new commits.
+
+---
+
+```bash
+$ git status
+```
+
+### 📋 Output:
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+```
+
+**✅ Now:**
+
+* You're fully synced with the remote.
+* Nothing changed locally after the pull.
+
+---
+
+```bash
+$ git push
+Enter passphrase for key '/home/brian/.ssh/id_ed25519':
+Everything up-to-date
+```
+
+**⬆️ Why Nothing Happened:**
+
+* You haven’t made any new commits after the pull.
+* There’s **nothing to push** to the remote.
+
+---
+
+## ✅ Final State: All Synced
+
+* You started 4 commits behind.
+* Pulled and fast-forwarded your branch.
+* Ended fully up-to-date.
+* No local changes, and push confirmed everything is synced.
