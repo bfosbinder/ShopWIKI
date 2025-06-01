@@ -20,7 +20,11 @@ It’s ironic — and telling — that a fully capable digital display is mounte
 * We’re doing extra work to avoid using simpler solutions
 * The tools for improvement are literally within arm’s reach
 
-📷 *Include photo or mockup with labels highlighting the physical and digital whiteboards*
+
+![example whiteboard image](../../images/exampleimage.png)
+
+
+
 
 This setup is a reminder that meaningful change often comes not from new tools, but from better use of what we already have.
 
@@ -33,9 +37,11 @@ This setup is a reminder that meaningful change often comes not from new tools, 
 * Dry-erase boards provide no version history or traceability
 * Digital notes can be saved, searched, and shared instantly
 
-📷 *Include screenshot of Microsoft Whiteboard, Excalidraw, or similar*
+[a modern whiteboard](https://s38063.pcdn.co/wp-content/uploads/2023/07/Kanban-template-in-Microsoft-Whiteboard.png.webp)
+
 
 ---
+
 
 ## 4. Leveraging Existing Infrastructure
 
