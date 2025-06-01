@@ -2,10 +2,11 @@
 
 ## 1. Introduction
 
-**Title:** *Modernizing Our Whiteboard Workflow*
-**Subtitle:** *From Marker Smudges to Searchable Notes*
-📷 *Insert image of current whiteboard setup (optional)*
-📝 *Prepared by \[Your Name], \[Date]*
+## 1. Introduction
+**Title:** *Modernizing Our Whiteboard Workflow*  
+**Subtitle:** *From Marker Smudges to Searchable Notes*  
+![example whiteboard image](https://spin.atomicobject.com/wp-content/uploads/messy-whiteboard.jpg)  
+📝 *Prepared by [Your Name], [Date]*
 
 ---
 
