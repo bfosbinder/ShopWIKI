@@ -2,7 +2,7 @@
 
 [Overview](#overview) · [Where We Went Wrong](#where-we-went-wrong) · [DFU vs Recovery Mode](#dfu-vs-recovery-mode) · [New Build Workflow](#new-build-workflow) · [Key Takeaways](#key-takeaways) · [Resources](#resources)
 
-## Overview
+## Overview asar
 
 We wanted to wipe and reinstall iPadOS on an older iPad using **only Linux**.  
 Sounds simple, but we ran into a string of *very* familiar pain-points: flaky cables, half-broken packages, USB-port weirdness, and confusion about DFU versus Recovery mode. This document captures those dead-ends and, more importantly, the repeatable fix using the latest open-source stack.

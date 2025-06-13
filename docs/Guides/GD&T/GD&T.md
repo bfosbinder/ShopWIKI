@@ -81,7 +81,7 @@ Profile Controls (Complex Surfaces and Boundaries):
 Datum Reference Framework
 The datum reference framework establishes the coordinate system for geometric controls. It consists of three mutually perpendicular planes that simulate the part's functional relationship in its assembly.
 
-Datum Precedence
+Datum Precedence:
 Primary Datum (First): Contacts at least 3 points, constrains 3 degrees of freedom
 Secondary Datum (Second): Contacts at least 2 points, constrains 2 additional degrees of freedom
 Tertiary Datum (Third): Contacts at least 1 point, constrains the final degree of freedom

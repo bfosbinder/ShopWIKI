@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3  asdasd
 """
 MTConnect Data Logger - MySQL Storage
 Collects MTConnect data via HTTP requests and stores in MySQL database
 """
 
-import requests
+import requestsasdasd
 import mysql.connector
 from mysql.connector import Error
 import xml.etree.ElementTree as ET

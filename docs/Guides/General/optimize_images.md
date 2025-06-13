@@ -14,7 +14,7 @@ This tool lets you drag an image onto a local web page, and it will:
 
 Create a folder anywhere (e.g., `~/image-dropper/`) and inside it, put these files:
 
-#### `index.html`
+#### `index.html`ddf
 
 ```html
 <!DOCTYPE html>
