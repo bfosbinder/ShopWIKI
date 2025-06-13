@@ -2,12 +2,14 @@
 
 [Overview](#overview) · [Where We Went Wrong](#where-we-went-wrong) · [DFU vs Recovery Mode](#dfu-vs-recovery-mode) · [New Build Workflow](#new-build-workflow) · [Key Takeaways](#key-takeaways) · [Resources](#resources)
 
-## Overview asar
+## Overview asar 1sdfsdf
+
 
 We wanted to wipe and reinstall iPadOS on an older iPad using **only Linux**.  
 Sounds simple, but we ran into a string of *very* familiar pain-points: flaky cables, half-broken packages, USB-port weirdness, and confusion about DFU versus Recovery mode. This document captures those dead-ends and, more importantly, the repeatable fix using the latest open-source stack.
 
-## Where We Went Wrong
+## Where We Went Wrong testing here
+
 
 > **Cable Chaos:** Our first micro-USB → Lightning cord was a charge-only knock-off. It would power the iPad but *never* enumerate as a USB device, so `lsusb` stayed silent and all restore tools failed.
 

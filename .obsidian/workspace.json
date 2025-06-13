@@ -161,8 +161,19 @@
               "icon": "lucide-list",
               "title": "Outline of optimize_images"
             }
+          },
+          {
+            "id": "2026561af1532543",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -179,10 +190,15 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b53a5760e7e88330",
+  "active": "06dcfb0873dbda39",
   "lastOpenFiles": [
-    "docs/Guides/GIT/Usage/Why_Git.md",
     "docs/Guides/General/optimize_images.md",
+    "docs/Guides/General/Whiteboard behind a whiteboard.md",
+    "docs/Guides/GIT/Setup/Git_For_Managers.md",
+    "docs/Guides/GIT/Setup/Local Setup.md",
+    "docs/Guides/General/ipad-restore.md",
+    "docs/Guides/General/image-dropper.md",
+    "docs/Guides/GIT/Usage/Why_Git.md",
     "docs/Guides/MTCONNECT/mtconnect_logger.md",
     "docs/Guides/GD&T/GD&T.md"
   ]

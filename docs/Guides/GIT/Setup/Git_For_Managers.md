@@ -12,7 +12,7 @@ Think of it as **"Track Changes" in Word — but for everything.**
 
 ---
 
-### ⚙️ Why Does Git Matter?
+### ⚙️ Why Does Git Matter? why!!!!
 
 * **Traceability:** Know exactly who changed what, when, and why
 * **Rollback:** Revert bad changes instantly
